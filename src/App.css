@@ -3,6 +3,23 @@
   display: flex;
 }
 
-.app > div {
+.app>div {
   margin-right: 50px;
+}
+
+.error {
+  border: red 1px solid;
+}
+
+.error-message {
+  margin: 0;
+  color: red;
+}
+
+.active-filter {
+  background-color: lightgreen;
+}
+
+.is-done {
+  opacity: 0.5;
 }
