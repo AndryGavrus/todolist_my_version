@@ -1,6 +1,8 @@
-import { ChangeEvent, KeyboardEvent, useState } from 'react'
+import { ChangeEvent } from 'react'
 import { FilterValues, Task, Todolist } from './App'
 import { Button } from './Button'
+import { CreateItemForm } from './CreateItemForm'
+import { EditableSpan } from './EditableSpan'
 
 type Props = {
     todolist: Todolist
@@ -14,6 +16,7 @@ type Props = {
     ) => void
     changeFilter: (todolistId: string, filter: FilterValues) => void
     deleteTodolist: (todolistId: string) => void
+    changeTaskTitle: (todolistId: string, taskId: string, title: string) => void
 }
 
 export const TodolistItem = ({
@@ -24,44 +27,17 @@ export const TodolistItem = ({
     createTask,
     changeTaskStatus,
     deleteTodolist,
+    changeTaskTitle,
 }: Props) => {
-    // const inputRef = useRef<HTMLInputElement>(null)
-    const [taskTitle, setTaskTitle] = useState('')
-
-    const [error, setError] = useState<string | null>(null)
-
-    // const createTaskHandler = () => {
-    //     if (inputRef.current) {
-    //         createTask(inputRef.current.value)
-    //         inputRef.current.value = ''
-    //     }
-    // }
-
-    const createTaskHandler = () => {
-        const trimmedTitle = taskTitle.trim()
-        if (trimmedTitle != '') {
-            createTask(id, trimmedTitle)
-            setTaskTitle('')
-        } else {
-            setError('Title is required')
-        }
+    const changeTaskTitleHandler = (title: string) => {
+        changeTaskTitle(id, task.id, title)
     }
-
-    const changeTaskTitleHandler = (event: ChangeEvent<HTMLInputElement>) => {
-        setTaskTitle(event.currentTarget.value)
-        setError(null)
+    const createTaskHandler = (title: string) => {
+        createTask(id, title)
     }
 
     const deleteTodolistHandler = () => {
         deleteTodolist(id)
-    }
-
-    const createTaskOnEnterHandler = (
-        event: KeyboardEvent<HTMLInputElement>
-    ) => {
-        if (event.key === 'Enter') {
-            createTaskHandler()
-        }
     }
 
     const changeFilterHandler = (filter: FilterValues) => {
@@ -74,19 +50,7 @@ export const TodolistItem = ({
                 <h3>{title}</h3>
                 <Button title="x" onClick={deleteTodolistHandler} />
             </div>
-            <div>
-                <input
-                    value={taskTitle}
-                    onChange={changeTaskTitleHandler}
-                    onKeyDown={createTaskOnEnterHandler}
-                    className={error ? 'error' : ''}
-                />
-                <Button title="+" onClick={createTaskHandler} />
-                {error && <p className="error-message">{error}</p>}
-
-                {/* <input ref={inputRef} /> */}
-                {/* <Button title="+" onClick={createTaskHandler} /> */}
-            </div>
+            <CreateItemForm onCreateItem={createTaskHandler} />
             {tasks.length === 0 ? (
                 <p>Тасок нет</p>
             ) : (
@@ -111,7 +75,7 @@ export const TodolistItem = ({
                                     checked={t.isDone}
                                     onChange={changeTaskStatusHandler}
                                 />
-                                <span>{t.title}</span>
+                                <EditableSpan value={t.title} />
                                 <Button
                                     title={'x'}
                                     onClick={deleteTaskHandler}
