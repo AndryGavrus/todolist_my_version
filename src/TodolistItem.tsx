@@ -17,6 +17,7 @@ type Props = {
     changeFilter: (todolistId: string, filter: FilterValues) => void
     deleteTodolist: (todolistId: string) => void
     changeTaskTitle: (todolistId: string, taskId: string, title: string) => void
+    changeTodolistTitle: (todolistId: string, title: string) => void
 }
 
 export const TodolistItem = ({
@@ -28,10 +29,8 @@ export const TodolistItem = ({
     changeTaskStatus,
     deleteTodolist,
     changeTaskTitle,
+    changeTodolistTitle,
 }: Props) => {
-    const changeTaskTitleHandler = (title: string) => {
-        changeTaskTitle(id, task.id, title)
-    }
     const createTaskHandler = (title: string) => {
         createTask(id, title)
     }
@@ -44,10 +43,19 @@ export const TodolistItem = ({
         changeFilter(id, filter)
     }
 
+    const changeTodolistTitleHandler = (title: string) => {
+        changeTodolistTitle(id, title)
+    }
+
     return (
         <div>
             <div className={'container'}>
-                <h3>{title}</h3>
+                <h3>
+                    <EditableSpan
+                        value={title}
+                        onChange={changeTodolistTitleHandler}
+                    />
+                </h3>
                 <Button title="x" onClick={deleteTodolistHandler} />
             </div>
             <CreateItemForm onCreateItem={createTaskHandler} />
@@ -56,6 +64,9 @@ export const TodolistItem = ({
             ) : (
                 <ul>
                     {tasks.map((t) => {
+                        const changeTaskTitleHandler = (title: string) => {
+                            changeTaskTitle(id, t.id, title)
+                        }
                         const deleteTaskHandler = () => {
                             deleteTask(id, t.id)
                         }
@@ -75,7 +86,10 @@ export const TodolistItem = ({
                                     checked={t.isDone}
                                     onChange={changeTaskStatusHandler}
                                 />
-                                <EditableSpan value={t.title} />
+                                <EditableSpan
+                                    value={t.title}
+                                    onChange={changeTaskTitleHandler}
+                                />
                                 <Button
                                     title={'x'}
                                     onClick={deleteTaskHandler}
