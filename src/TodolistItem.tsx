@@ -1,8 +1,10 @@
 import { ChangeEvent } from 'react'
 import { FilterValues, Task, Todolist } from './App'
-import { Button } from './Button'
 import { CreateItemForm } from './CreateItemForm'
 import { EditableSpan } from './EditableSpan'
+import DeleteSweepRoundedIcon from '@mui/icons-material/DeleteSweepRounded'
+import DeleteIcon from '@mui/icons-material/Delete'
+import { Button, Checkbox, IconButton, List, ListItem } from '@mui/material'
 
 type Props = {
     todolist: Todolist
@@ -56,13 +58,15 @@ export const TodolistItem = ({
                         onChange={changeTodolistTitleHandler}
                     />
                 </h3>
-                <Button title="x" onClick={deleteTodolistHandler} />
+                <IconButton onClick={deleteTodolistHandler} aria-label="delete">
+                    <DeleteIcon />
+                </IconButton>
             </div>
             <CreateItemForm onCreateItem={createTaskHandler} />
             {tasks.length === 0 ? (
                 <p>Тасок нет</p>
             ) : (
-                <ul>
+                <List>
                     {tasks.map((t) => {
                         const changeTaskTitleHandler = (title: string) => {
                             changeTaskTitle(id, t.id, title)
@@ -77,44 +81,58 @@ export const TodolistItem = ({
                             changeTaskStatus(id, t.id, newStatusValue)
                         }
                         return (
-                            <li
+                            <ListItem
                                 key={t.id}
-                                className={t.isDone ? 'is-done' : ''}
+                                sx={{
+                                    p: 0,
+                                    justifyContent: 'space-between',
+                                    opacity: t.isDone ? 0.5 : 1,
+                                }}
                             >
-                                <input
-                                    type="checkbox"
-                                    checked={t.isDone}
-                                    onChange={changeTaskStatusHandler}
-                                />
-                                <EditableSpan
-                                    value={t.title}
-                                    onChange={changeTaskTitleHandler}
-                                />
-                                <Button
-                                    title={'x'}
+                                <div>
+                                    <Checkbox
+                                        size="small"
+                                        checked={t.isDone}
+                                        onChange={changeTaskStatusHandler}
+                                    />
+                                    <EditableSpan
+                                        value={t.title}
+                                        onChange={changeTaskTitleHandler}
+                                    />
+                                </div>
+                                <IconButton
                                     onClick={deleteTaskHandler}
-                                />
-                            </li>
+                                    aria-label="delete"
+                                >
+                                    <DeleteSweepRoundedIcon />
+                                </IconButton>
+                            </ListItem>
                         )
                     })}
-                </ul>
+                </List>
             )}
             <div>
                 <Button
-                    className={filter === 'all' ? 'active-filter' : ''}
-                    title="All"
+                    size="small"
+                    variant={filter === 'all' ? 'contained' : 'text'}
                     onClick={() => changeFilterHandler('all')}
-                />
+                >
+                    All
+                </Button>
                 <Button
-                    className={filter === 'active' ? 'active-filter' : ''}
-                    title="Active"
+                    size="small"
+                    variant={filter === 'active' ? 'contained' : 'text'}
                     onClick={() => changeFilterHandler('active')}
-                />
+                >
+                    Active
+                </Button>
                 <Button
-                    className={filter === 'completed' ? 'active-filter' : ''}
-                    title="Completed"
+                    size="small"
+                    variant={filter === 'completed' ? 'contained' : 'text'}
                     onClick={() => changeFilterHandler('completed')}
-                />
+                >
+                    Completed
+                </Button>
             </div>
         </div>
     )

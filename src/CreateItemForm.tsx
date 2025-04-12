@@ -1,5 +1,6 @@
+import { IconButton, TextField } from '@mui/material'
+import DataSaverOnIcon from '@mui/icons-material/DataSaverOn'
 import { ChangeEvent, KeyboardEvent, useState } from 'react'
-import { Button } from './Button'
 
 type Props = {
     onCreateItem: (title: string) => void
@@ -34,15 +35,19 @@ export const CreateItemForm = ({ onCreateItem }: Props) => {
     }
     return (
         <div>
-            <input
+            <TextField
+                size="small"
+                error={!!error}
+                label="Enter a title"
+                helperText={error}
+                variant="outlined"
                 value={itemTitle}
                 onChange={changeItemTitleHandler}
                 onKeyDown={createItemOnEnterHandler}
-                className={error ? 'error' : ''}
             />
-            <Button title="+" onClick={createItemHandler} />
-            {error && <p className="error-message">{error}</p>}
+            <IconButton onClick={createItemHandler} color={'primary'}>
+                <DataSaverOnIcon />
+            </IconButton>
         </div>
     )
 }
-
