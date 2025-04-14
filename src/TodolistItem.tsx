@@ -4,7 +4,8 @@ import { CreateItemForm } from './CreateItemForm'
 import { EditableSpan } from './EditableSpan'
 import DeleteSweepRoundedIcon from '@mui/icons-material/DeleteSweepRounded'
 import DeleteIcon from '@mui/icons-material/Delete'
-import { Button, Checkbox, IconButton, List, ListItem } from '@mui/material'
+import { Box, Button, Checkbox, IconButton, List, ListItem } from '@mui/material'
+import { containerSx, getListItemSx } from './TodolistItem.styles'
 
 type Props = {
     todolist: Todolist
@@ -51,7 +52,7 @@ export const TodolistItem = ({
 
     return (
         <div>
-            <div className={'container'}>
+            <Box sx={containerSx}>
                 <h3>
                     <EditableSpan
                         value={title}
@@ -61,7 +62,7 @@ export const TodolistItem = ({
                 <IconButton onClick={deleteTodolistHandler} aria-label="delete">
                     <DeleteIcon />
                 </IconButton>
-            </div>
+            </Box>
             <CreateItemForm onCreateItem={createTaskHandler} />
             {tasks.length === 0 ? (
                 <p>Тасок нет</p>
@@ -83,11 +84,7 @@ export const TodolistItem = ({
                         return (
                             <ListItem
                                 key={t.id}
-                                sx={{
-                                    p: 0,
-                                    justifyContent: 'space-between',
-                                    opacity: t.isDone ? 0.5 : 1,
-                                }}
+                                sx={getListItemSx(t.isDone)}
                             >
                                 <div>
                                     <Checkbox
