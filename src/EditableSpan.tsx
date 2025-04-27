@@ -23,9 +23,7 @@ export const EditableSpan = ({ value, onChange, className }: Props) => {
         onChange(title)
     }
 
-    const createItemOnEnterHandler = (
-        event: KeyboardEvent<HTMLInputElement>
-    ) => {
+    const createItemOnEnterHandler = (event: KeyboardEvent<HTMLInputElement>) => {
         if (event.key === 'Enter') {
             turnOffEditMode()
         }
@@ -34,17 +32,19 @@ export const EditableSpan = ({ value, onChange, className }: Props) => {
     return (
         <>
             {isEditMode ? (
-                            <TextField
-                                size="small"
-                                variant="standard"
-                                value={title}
-                                onChange={changeTitle}
-                                onBlur={turnOffEditMode}
-                                onKeyDown={createItemOnEnterHandler}
-                                autoFocus
-                            />
+                <TextField
+                    size="small"
+                    variant="standard"
+                    value={title}
+                    onChange={changeTitle}
+                    onBlur={turnOffEditMode}
+                    onKeyDown={createItemOnEnterHandler}
+                    autoFocus
+                />
             ) : (
-                <span className={className} onDoubleClick={turnOnEditMode}>{title}</span>
+                <span className={className} onDoubleClick={turnOnEditMode}>
+                    {title}
+                </span>
             )}
         </>
     )

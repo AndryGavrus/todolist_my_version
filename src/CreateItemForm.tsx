@@ -26,9 +26,7 @@ export const CreateItemForm = ({ onCreateItem }: Props) => {
         setError(null)
     }
 
-    const createItemOnEnterHandler = (
-        event: KeyboardEvent<HTMLInputElement>
-    ) => {
+    const createItemOnEnterHandler = (event: KeyboardEvent<HTMLInputElement>) => {
         if (event.key === 'Enter') {
             createItemHandler()
         }

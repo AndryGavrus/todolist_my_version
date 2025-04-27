@@ -12,11 +12,7 @@ type Props = {
     tasks: Task[]
     deleteTask: (todolistId: string, taskId: string) => void
     createTask: (todolistId: string, title: string) => void
-    changeTaskStatus: (
-        todolistId: string,
-        taskId: string,
-        isDone: boolean
-    ) => void
+    changeTaskStatus: (todolistId: string, taskId: string, isDone: boolean) => void
     changeFilter: (todolistId: string, filter: FilterValues) => void
     deleteTodolist: (todolistId: string) => void
     changeTaskTitle: (todolistId: string, taskId: string, title: string) => void
@@ -54,10 +50,7 @@ export const TodolistItem = ({
         <div>
             <Box sx={containerSx}>
                 <h3>
-                    <EditableSpan
-                        value={title}
-                        onChange={changeTodolistTitleHandler}
-                    />
+                    <EditableSpan value={title} onChange={changeTodolistTitleHandler} />
                 </h3>
                 <IconButton onClick={deleteTodolistHandler} aria-label="delete">
                     <DeleteIcon />
@@ -75,17 +68,12 @@ export const TodolistItem = ({
                         const deleteTaskHandler = () => {
                             deleteTask(id, t.id)
                         }
-                        const changeTaskStatusHandler = (
-                            e: ChangeEvent<HTMLInputElement>
-                        ) => {
+                        const changeTaskStatusHandler = (e: ChangeEvent<HTMLInputElement>) => {
                             const newStatusValue = e.currentTarget.checked
                             changeTaskStatus(id, t.id, newStatusValue)
                         }
                         return (
-                            <ListItem
-                                key={t.id}
-                                sx={getListItemSx(t.isDone)}
-                            >
+                            <ListItem key={t.id} sx={getListItemSx(t.isDone)}>
                                 <div>
                                     <Checkbox
                                         size="small"
@@ -97,10 +85,7 @@ export const TodolistItem = ({
                                         onChange={changeTaskTitleHandler}
                                     />
                                 </div>
-                                <IconButton
-                                    onClick={deleteTaskHandler}
-                                    aria-label="delete"
-                                >
+                                <IconButton onClick={deleteTaskHandler} aria-label="delete">
                                     <DeleteSweepRoundedIcon />
                                 </IconButton>
                             </ListItem>
