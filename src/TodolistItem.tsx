@@ -1,5 +1,5 @@
 import { ChangeEvent } from 'react'
-import { FilterValues, Task, Todolist } from './App'
+import { FilterValues, Task, Todolist } from './app/App'
 import { CreateItemForm } from './CreateItemForm'
 import { EditableSpan } from './EditableSpan'
 import DeleteSweepRoundedIcon from '@mui/icons-material/DeleteSweepRounded'
