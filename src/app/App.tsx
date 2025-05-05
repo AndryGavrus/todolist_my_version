@@ -26,6 +26,8 @@ import {
 } from '../model/tasks-reducer'
 import { useAppDispatch } from './hooks/useAppDispatch'
 import { useAppSelector } from './hooks/useAppSelector'
+import { selectTasks } from '../model/tasks-selectors'
+import { selectTodolists } from '../model/todolists-selectors'
 
 export type Todolist = {
     id: string
@@ -49,8 +51,8 @@ export const App = () => {
     // const [todolists, dispatchToTodolists] = useReducer(todolistsReducer, [])
     // const [tasks, dispatchToTasks] = useReducer(tasksReducer, {})
 
-    const todolists = useAppSelector(state => state.todolists)
-    const tasks = useAppSelector(state => state.tasks)
+    const todolists = useAppSelector(selectTodolists)
+    const tasks = useAppSelector(selectTasks)
 
     const dispatch = useAppDispatch()
 
