@@ -28,6 +28,10 @@ import { useAppDispatch } from './hooks/useAppDispatch'
 import { useAppSelector } from './hooks/useAppSelector'
 import { selectTasks } from '../model/tasks-selectors'
 import { selectTodolists } from '../model/todolists-selectors'
+import { changeThemeModeAC, ThemeMode } from './app-reducer'
+import { useSelector } from 'react-redux'
+import { selectThemeMode } from './app-selectors'
+import { getTheme } from '../common/theme/theme'
 
 export type Todolist = {
     id: string
@@ -44,8 +48,6 @@ export type Task = {
 export type TasksState = Record<string, Task[]>
 
 export type FilterValues = 'all' | 'active' | 'completed'
-
-type ThemeMode = 'dark' | 'light'
 
 export const App = () => {
     // const [todolists, dispatchToTodolists] = useReducer(todolistsReducer, [])
@@ -89,19 +91,10 @@ export const App = () => {
         dispatch(changeTaskStatusAC({ todolistId, taskId, isDone }))
     }
 
-    const [themeMode, setThemeMode] = useState<ThemeMode>('light')
-
-    const theme = createTheme({
-        palette: {
-            mode: themeMode,
-            primary: {
-                main: '#087EA4',
-            },
-        },
-    })
-
+    const themeMode = useSelector(selectThemeMode)
+    const theme = getTheme(themeMode)
     const changeMode = () => {
-        setThemeMode(themeMode === 'light' ? 'dark' : 'light')
+        dispatch(changeThemeModeAC({themeMode: themeMode === 'light' ? 'dark' : 'light'}))
     }
 
     return (
