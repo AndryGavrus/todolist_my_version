@@ -1,11 +1,12 @@
 import { ChangeEvent } from 'react'
-import { FilterValues, Task, Todolist } from './app/App'
 import { CreateItemForm } from './CreateItemForm'
 import { EditableSpan } from './EditableSpan'
 import DeleteSweepRoundedIcon from '@mui/icons-material/DeleteSweepRounded'
 import DeleteIcon from '@mui/icons-material/Delete'
 import { Box, Button, Checkbox, IconButton, List, ListItem } from '@mui/material'
 import { containerSx, getListItemSx } from './TodolistItem.styles'
+import { Todolist, FilterValues } from './model/todolists-reducer'
+import { Task } from './model/tasks-reducer'
 
 type Props = {
     todolist: Todolist
