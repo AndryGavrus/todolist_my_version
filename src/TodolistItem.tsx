@@ -2,18 +2,19 @@ import { ChangeEvent } from 'react'
 import { CreateItemForm } from './CreateItemForm'
 import { EditableSpan } from './EditableSpan'
 import DeleteSweepRoundedIcon from '@mui/icons-material/DeleteSweepRounded'
-import DeleteIcon from '@mui/icons-material/Delete'
 import { Box, Button, Checkbox, IconButton, List, ListItem } from '@mui/material'
 import { containerSx, getListItemSx } from './TodolistItem.styles'
 import { Todolist, FilterValues } from './model/todolists-reducer'
-import { Task } from './model/tasks-reducer'
+import { useAppSelector } from './app/hooks/useAppSelector'
+import { selectTasks } from './model/tasks-selectors'
+import { changeTaskStatusAC } from './model/tasks-reducer'
+import { useAppDispatch } from './app/hooks/useAppDispatch'
+import { TodolistTitle } from './TodolistTitle'
 
 type Props = {
     todolist: Todolist
-    tasks: Task[]
     deleteTask: (todolistId: string, taskId: string) => void
     createTask: (todolistId: string, title: string) => void
-    changeTaskStatus: (todolistId: string, taskId: string, isDone: boolean) => void
     changeFilter: (todolistId: string, filter: FilterValues) => void
     deleteTodolist: (todolistId: string) => void
     changeTaskTitle: (todolistId: string, taskId: string, title: string) => void
@@ -21,57 +22,56 @@ type Props = {
 }
 
 export const TodolistItem = ({
-    todolist: { id, title, filter },
-    tasks,
+    todolist: { id, filter },
+    todolist,
     deleteTask,
     changeFilter,
     createTask,
-    changeTaskStatus,
-    deleteTodolist,
     changeTaskTitle,
-    changeTodolistTitle,
-}: Props) => {
-    const createTaskHandler = (title: string) => {
-        createTask(id, title)
+    }: Props) => {
+
+    const tasks = useAppSelector(selectTasks)
+    const dispatch = useAppDispatch()
+
+    const todolistTasks = tasks[id]
+    let filteredTasks = todolistTasks
+    if (filter === 'active') {
+        filteredTasks = todolistTasks.filter((task: { isDone: boolean }) => !task.isDone)
+    }
+    if (filter === 'completed') {
+        filteredTasks = todolistTasks.filter((task: { isDone: boolean }) => task.isDone)
     }
 
-    const deleteTodolistHandler = () => {
-        deleteTodolist(id)
+    const createTaskHandler = (title: string) => {
+        createTask(id, title)
     }
 
     const changeFilterHandler = (filter: FilterValues) => {
         changeFilter(id, filter)
     }
 
-    const changeTodolistTitleHandler = (title: string) => {
-        changeTodolistTitle(id, title)
-    }
+
 
     return (
         <div>
             <Box sx={containerSx}>
-                <h3>
-                    <EditableSpan value={title} onChange={changeTodolistTitleHandler} />
-                </h3>
-                <IconButton onClick={deleteTodolistHandler} aria-label="delete">
-                    <DeleteIcon />
-                </IconButton>
+                <TodolistTitle todolist={todolist}/>
             </Box>
             <CreateItemForm onCreateItem={createTaskHandler} />
-            {tasks.length === 0 ? (
+            {filteredTasks.length === 0 ? (
                 <p>Тасок нет</p>
             ) : (
                 <List>
-                    {tasks.map((t) => {
+                    {filteredTasks.map((t: { id: string; isDone: boolean; title: string }) => {
                         const changeTaskTitleHandler = (title: string) => {
-                            changeTaskTitle(id, t.id, title)
+                            changeTaskTitle(id, id, title)
                         }
                         const deleteTaskHandler = () => {
-                            deleteTask(id, t.id)
+                            deleteTask(id, id)
                         }
                         const changeTaskStatusHandler = (e: ChangeEvent<HTMLInputElement>) => {
                             const newStatusValue = e.currentTarget.checked
-                            changeTaskStatus(id, t.id, newStatusValue)
+                            dispatch(changeTaskStatusAC({ todolistId: id, taskId: t.id, isDone: newStatusValue }))
                         }
                         return (
                             <ListItem key={t.id} sx={getListItemSx(t.isDone)}>
