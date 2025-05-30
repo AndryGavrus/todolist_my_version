@@ -1,6 +1,6 @@
 import './App.css'
 import { CssBaseline, ThemeProvider } from '@mui/material'
-import { useAppSelector } from './hooks/useAppSelector'
+import { useAppSelector } from '../common/hooks/useAppSelector'
 import { selectThemeMode } from './app-selectors'
 import { getTheme } from '../common/theme/theme'
 import { Header } from '@/common/components/Header/Header'

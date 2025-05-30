@@ -1,8 +1,8 @@
-import { CreateItemForm } from "@/CreateItemForm"
-import { createTodolistAC } from "@/model/todolists-reducer"
+import { CreateItemForm } from "@/common/components/CreateItemForm/CreateItemForm"
+import { createTodolistAC } from "@/features/todolists/model/todolists-reducer"
 import { Container, Grid } from "@mui/material"
-import { useAppDispatch } from "./hooks/useAppDispatch"
-import { Todolists } from "@/Todolists"
+import { useAppDispatch } from "../common/hooks/useAppDispatch"
+import { Todolists } from "@/features/todolists/ui/Todolists/Todolists"
 
 export const Main = () => {
 

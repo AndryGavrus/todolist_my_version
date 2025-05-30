@@ -39,25 +39,22 @@ export const tasksReducer = createReducer(initialState, (builder) => {
             }
         })
         .addCase(createTaskAC, (state, action) => {
-            state[action.payload.todolistId].push({
-                id: nanoid(),
-                title: action.payload.title,
-                isDone: false,
-            })
+            const newTask: Task = { title: action.payload.title, isDone: false, id: nanoid() }
+            state[action.payload.todolistId].unshift(newTask)
         })
         .addCase(changeTaskStatusAC, (state, action) => {
-            const newTask = state[action.payload.todolistId].find(task=> task.id=== action.payload.taskId)
+            const newTask = state[action.payload.todolistId].find(task => task.id === action.payload.taskId)
             if (newTask) {
                 newTask.isDone = action.payload.isDone
             }
         })
         .addCase(changeTaskTitleAC, (state, action) => {
-            const newTask = state[action.payload.todolistId].find(task=> task.id=== action.payload.taskId)
+            const newTask = state[action.payload.todolistId].find(task => task.id === action.payload.taskId)
             if (newTask) {
                 newTask.title = action.payload.title
             }
         })
-        })
+})
 
 // (state: TasksState = initialState, action: Actions): TasksState => {
 //     switch (action.type) {

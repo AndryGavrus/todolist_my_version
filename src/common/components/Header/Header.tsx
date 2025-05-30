@@ -1,12 +1,13 @@
-import { NavButton } from "@/NavButton"
-import { containerSx } from "@/TodolistItem.styles"
-import { AppBar, Toolbar, Container, IconButton, Switch } from "@mui/material"
+import { NavButton } from "@/common/components/NavButton/NavButton"
+import { AppBar, Toolbar, Container, IconButton } from "@mui/material"
 import MenuIcon from '@mui/icons-material/Menu'
 import { changeThemeModeAC } from "@/app/app-reducer"
 import { selectThemeMode } from "@/app/app-selectors"
 import { getTheme } from "@/common/theme/theme"
 import { useSelector } from "react-redux"
-import { useAppDispatch } from "@/app/hooks/useAppDispatch"
+import { useAppDispatch } from "@/common/hooks/useAppDispatch"
+import { MaterialUISwitch } from "../MaterialUISwitch/MaterialUISwitch"
+import { containerSx } from "@/common/styles/container.styles"
 
 export const Header = () => {
 
@@ -30,7 +31,7 @@ export const Header = () => {
                             <NavButton>Sign in</NavButton>
                             <NavButton>Sign up</NavButton>
                             <NavButton background={theme.palette.primary.dark}>Faq</NavButton>
-                            <Switch color={'default'} onChange={changeMode} />
+                            <MaterialUISwitch color={'default'} onChange={changeMode} />
                         </div>
                     </Container>
                 </Toolbar>
