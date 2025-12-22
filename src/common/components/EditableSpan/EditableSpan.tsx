@@ -1,51 +1,40 @@
-import { TextField } from '@mui/material'
-import { useState, KeyboardEvent, ChangeEvent } from 'react'
+import TextField from '@mui/material/TextField'
+import {type ChangeEvent, useState} from 'react'
 
 type Props = {
-    value: string
-    onChange: (title: string) => void
-    className?: string
+  value: string
+  onChange: (title: string) => void
 }
-export const EditableSpan = ({ value, onChange, className }: Props) => {
-    const [title, setTitle] = useState(value)
-    const [isEditMode, setIsEditMode] = useState(false)
 
-    const changeTitle = (event: ChangeEvent<HTMLInputElement>) => {
-        setTitle(event.currentTarget.value)
-    }
+export const EditableSpan = ({ value, onChange }: Props) => {
+  const [title, setTitle] = useState(value)
+  const [isEditMode, setIsEditMode] = useState(false)
 
-    const turnOnEditMode = () => {
-        setIsEditMode(true)
-    }
+  const turnOnEditMode = () => {
+    setIsEditMode(true)
+  }
 
-    const turnOffEditMode = () => {
-        setIsEditMode(false)
-        onChange(title)
-    }
+  const turnOffEditMode = () => {
+    setIsEditMode(false)
+    onChange(title)
+  }
 
-    const createItemOnEnterHandler = (event: KeyboardEvent<HTMLInputElement>) => {
-        if (event.key === 'Enter') {
-            turnOffEditMode()
-        }
-    }
+  const changeTitle = (event: ChangeEvent<HTMLInputElement>) => {
+    setTitle(event.currentTarget.value)
+  }
 
-    return (
-        <>
-            {isEditMode ? (
-                <TextField
-                    size="small"
-                    variant="standard"
-                    value={title}
-                    onChange={changeTitle}
-                    onBlur={turnOffEditMode}
-                    onKeyDown={createItemOnEnterHandler}
-                    autoFocus
-                />
-            ) : (
-                <span className={className} onDoubleClick={turnOnEditMode}>
-                    {title}
-                </span>
-            )}
-        </>
-    )
+  return (
+      <>
+        {isEditMode ? (
+            <TextField variant={'outlined'}
+                       value={title}
+                       size={'small'}
+                       onChange={changeTitle}
+                       onBlur={turnOffEditMode}
+                       autoFocus/>
+        ) : (
+            <span onDoubleClick={turnOnEditMode}>{value}</span>
+        )}
+      </>
+  )
 }
