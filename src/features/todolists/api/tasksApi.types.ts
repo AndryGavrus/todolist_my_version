@@ -1,4 +1,4 @@
-import { TaskStatus, TaskPriority } from "@/common/enums/enums"
+import type { TaskPriority, TaskStatus } from '@/common/enums/enums'
 
 export type DomainTask = {
     description: string

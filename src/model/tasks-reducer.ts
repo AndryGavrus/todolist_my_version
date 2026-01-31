@@ -1,11 +1,11 @@
-import { TasksState } from '@/features/todolists/model/tasks-reducer';
-import { createTodolistAC, deleteTodolistAC } from '@/features/todolists/model/todolists-reducer';
+import { TasksState } from '@/features/todolists/model/tasks-reducer'
+import { createTodolistAC, deleteTodolistAC } from '@/features/todolists/model/todolists-reducer'
 import { createAction, createReducer, nanoid } from '@reduxjs/toolkit'
 
 const initialState: TasksState = {}
 
 export const deleteTaskAC = createAction<{ todolistId: string; taskId: string }>('tasks/deleteTask')
-export const createTaskAC = createAction<{ todolistId: string, title: string }>("tasks/createTask")
+export const createTaskAC = createAction<{ todolistId: string; title: string }>('tasks/createTask')
 export const changeTaskStatusAC = createAction<{
     todolistId: string
     taskId: string
@@ -39,18 +39,18 @@ export const tasksReducer = createReducer(initialState, (builder) => {
             })
         })
         .addCase(changeTaskStatusAC, (state, action) => {
-            const newTask = state[action.payload.todolistId].find(task=> task.id=== action.payload.taskId)
+            const newTask = state[action.payload.todolistId].find((task) => task.id === action.payload.taskId)
             if (newTask) {
                 newTask.isDone = action.payload.isDone
             }
         })
         .addCase(changeTaskTitleAC, (state, action) => {
-            const newTask = state[action.payload.todolistId].find(task=> task.id=== action.payload.taskId)
+            const newTask = state[action.payload.todolistId].find((task) => task.id === action.payload.taskId)
             if (newTask) {
                 newTask.title = action.payload.title
             }
         })
-        })
+})
 
 // (state: TasksState = initialState, action: Actions): TasksState => {
 //     switch (action.type) {
