@@ -1,10 +1,10 @@
-import { changeThemeModeAC } from '@/app/app-slice'
-import { selectThemeMode } from '@/app/app-slice'
+import { changeThemeModeAC, selectStatus, selectThemeMode } from '@/app/app-slice'
+import { NavButton } from '@/common/components/NavButton/NavButton'
 import { useAppDispatch, useAppSelector } from '@/common/hooks'
 import { containerSx } from '@/common/styles'
 import { getTheme } from '@/common/theme'
-import { NavButton } from '@/common/components/NavButton/NavButton'
 import MenuIcon from '@mui/icons-material/Menu'
+import { LinearProgress } from '@mui/material'
 import AppBar from '@mui/material/AppBar'
 import Container from '@mui/material/Container'
 import IconButton from '@mui/material/IconButton'
@@ -22,6 +22,14 @@ export const Header = () => {
         dispatch(changeThemeModeAC({ themeMode: themeMode === 'light' ? 'dark' : 'light' }))
     }
 
+    const status  = useAppSelector(selectStatus)
+
+    // const selectAppStatus = ()=>{
+    //     dispatch(setAppStatusAC({
+    //         status: 'idle'
+    //     }))
+    // }
+
     return (
         <AppBar position="static" sx={{ mb: '30px' }}>
             <Toolbar>
@@ -37,6 +45,7 @@ export const Header = () => {
                     </div>
                 </Container>
             </Toolbar>
+            {status === 'loading' && <LinearProgress />}
         </AppBar>
     )
 }
