@@ -5,7 +5,7 @@ import { createAppSlice } from '@/common/utils'
 import { handleServerAppError } from '@/common/utils/handleServerAppError'
 import { handleServerNetworkError } from '@/common/utils/handleServerNetworkError'
 import { tasksApi } from '../api/tasksApi'
-import { DomainTask, UpdateTaskModel } from '../api/tasksApi.types'
+import { DomainTask, domainTaskSchema, UpdateTaskModel } from '../api/tasksApi.types'
 import { createTodolistTC, deleteTodolistTC } from './todolists-slice'
 
 export const tasksSlice = createAppSlice({
@@ -20,6 +20,7 @@ export const tasksSlice = createAppSlice({
                 try {
                     thunkAPI.dispatch(setAppStatusAC({ status: 'loading' }))
                     const res = await tasksApi.getTasks(todolistId)
+                    domainTaskSchema.array().parse(res.data.items) // 💎
                     thunkAPI.dispatch(setAppStatusAC({ status: 'succeeded' }))
                     return { todolistId, tasks: res.data.items }
                 } catch (error) {
