@@ -1,31 +1,28 @@
-import { Main } from '@/app/Main'
-import { PageNotFound } from '@/common/components'
-import { Login } from '@/features/auth/ui/Login/Login'
-import { Route, Routes } from 'react-router'
-import { ProtectedRoute } from '../components/ProtectedRoute/ProtectedRoute'
-import { selectIsLoggedIn } from '@/features/auth/model/auth-slice'
-import { useAppSelector } from '../hooks'
+import { Main } from "@/app/Main"
+import { PageNotFound, ProtectedRoute } from "@/common/components"
+import { useAppSelector } from "@/common/hooks"
+import { selectIsLoggedIn } from "@/features/auth/model/auth-slice"
+import { Login } from "@/features/auth/ui/Login/Login"
+import { Route, Routes } from "react-router"
 
 export const Path = {
-    Main: '/',
-    Login: 'login',
-    Faq: '/faq',
-    NotFound: '*',
+  Main: "/",
+  Login: "login",
+  NotFound: "*",
 } as const
 
 export const Routing = () => {
-    const isLoggedIn = useAppSelector(selectIsLoggedIn)
+  const isLoggedIn = useAppSelector(selectIsLoggedIn)
 
-    return (
-        <Routes>
-            <Route element={<ProtectedRoute isAllowed={isLoggedIn} />}>
-                <Route path={Path.Main} element={<Main />} />
-                <Route path={Path.Faq} element={<h2>Faq</h2>} />
-            </Route>
-            <Route element={<ProtectedRoute isAllowed={!isLoggedIn} redirectPath={Path.Main} />}>
-                <Route path={Path.Login} element={<Login />} />
-            </Route>
-            <Route path={Path.NotFound} element={<PageNotFound />} />
-        </Routes>
-    )
+  return (
+    <Routes>
+      <Route element={<ProtectedRoute isAllowed={isLoggedIn} redirectPath={Path.Login} />}>
+        <Route path={Path.Main} element={<Main />} />
+      </Route>
+      <Route element={<ProtectedRoute isAllowed={!isLoggedIn} />}>
+        <Route path={Path.Login} element={<Login />} />
+      </Route>
+      <Route path={Path.NotFound} element={<PageNotFound />} />
+    </Routes>
+  )
 }
