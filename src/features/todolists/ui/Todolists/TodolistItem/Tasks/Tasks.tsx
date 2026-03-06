@@ -5,6 +5,7 @@ import type { DomainTodolist } from "@/features/todolists/model/todolists-slice"
 import { useEffect } from "react"
 import { TaskItem } from "./TaskItem/TaskItem"
 import List from "@mui/material/List"
+import { useGetTasksQuery } from "@/features/todolists/api/tasksApi"
 
 type Props = {
   todolist: DomainTodolist
@@ -13,12 +14,14 @@ type Props = {
 export const Tasks = ({ todolist }: Props) => {
   const { id, filter } = todolist
 
+  const { data } = useGetTasksQuery(id)
+
   const tasks = useAppSelector(selectTasks)
 
   const dispatch = useAppDispatch()
 
   const todolistTasks = tasks[id]
-  let filteredTasks = todolistTasks
+  let filteredTasks = data?.items
   if (filter === "active") {
     filteredTasks = todolistTasks.filter((task) => task.status === TaskStatus.New)
   }
